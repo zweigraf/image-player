@@ -13,6 +13,7 @@ import PureLayout
 import AVKit
 import AVFoundation
 import AudioToolbox
+import CoreGraphics
 
 class ViewController: UIViewController {
 
@@ -63,24 +64,50 @@ class ViewController: UIViewController {
         playWav(url: wavURL)
     }
     
-    func copy(image: UIImage, to location: URL) {
-        let data = UIImageJPEGRepresentation(image, 0.8)!
-        try! data.write(to: location)
+    func jpegData(for image: UIImage, quality: CGFloat = 0.8) -> Data {
+        return UIImageJPEGRepresentation(image, 0.8)!
     }
     
-    func writeWav(from image: UIImage, url: URL) {
-        let data = UIImageJPEGRepresentation(image, 0.8)!
+    func rawData(for image: UIImage) -> Data {
+        let cgImage = image.cgImage!
+        let width = cgImage.width
+        let height = cgImage.height
+
+        let bytesPerPixel = 4
+        let bytesPerRow = bytesPerPixel * width
+        let bitsPerComponent = 8
         
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let size = bytesPerRow * height
+        let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+        let bitmapInfo: CGBitmapInfo = cgImage.bitmapInfo
+        
+        let context = CGContext(data: intPointer, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)
+        context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
+        let data = Data(bytes: intPointer, count: size)
+        return data
+    }
+    
+    func data(for image: UIImage) -> Data {
+        return rawData(for: image)
+    }
+    
+    func copy(image: UIImage, to location: URL) {
+        let imageData = data(for: image)
+        try! imageData.write(to: location)
+    }
+    
+    func writePCM(data: Data, url: URL, sampleRate: Float64 = 44100, numberOfChannels: UInt32 = 2) {
         let formatID = kAudioFormatLinearPCM
         let formatFlags = AudioFormatFlags(kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked)
-        let shortSize = UInt32(MemoryLayout<CShort>.stride)
-        let bytesPerFrame = shortSize * 2
-        let sampleRate: Float64 = 44100 / 2 / 2 / 2 / 2 / 2 / 2
         
-        var streamDesc = AudioStreamBasicDescription(mSampleRate: sampleRate, mFormatID: formatID, mFormatFlags: formatFlags, mBytesPerPacket: bytesPerFrame, mFramesPerPacket: 1, mBytesPerFrame: bytesPerFrame, mChannelsPerFrame: 2, mBitsPerChannel: shortSize * 8, mReserved: 0)
+        let shortSize = UInt32(MemoryLayout<CShort>.stride)
+        let bytesPerFrame = shortSize * numberOfChannels
+        
+        var streamDesc = AudioStreamBasicDescription(mSampleRate: sampleRate, mFormatID: formatID, mFormatFlags: formatFlags, mBytesPerPacket: bytesPerFrame, mFramesPerPacket: 1, mBytesPerFrame: bytesPerFrame, mChannelsPerFrame: numberOfChannels, mBitsPerChannel: shortSize * 8, mReserved: 0)
         
         var channelLayout = AudioChannelLayout()
-        channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_Stereo
+        channelLayout.mChannelLayoutTag = numberOfChannels == 2 ? kAudioChannelLayoutTag_Stereo : kAudioChannelLayoutTag_Mono
         
         let cfUrl = url as CFURL
         let fileType = kAudioFileWAVEType
@@ -91,7 +118,8 @@ class ViewController: UIViewController {
         
         let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: data.count)
         data.copyBytes(to: intPointer, count: data.count)
-        let buffer = AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(data.count), mData: intPointer)
+        
+        let buffer = AudioBuffer(mNumberChannels: numberOfChannels, mDataByteSize: UInt32(data.count), mData: intPointer)
         var bufferList = AudioBufferList(mNumberBuffers: 1, mBuffers: buffer)
         
         let numberOfFrames = UInt32(data.count) / bytesPerFrame
@@ -99,6 +127,16 @@ class ViewController: UIViewController {
         print("write status \(writeStatus)")
         let closeStatus = ExtAudioFileDispose(outputFile!)
         print("close status \(closeStatus)")
+    }
+    
+    func writeWav(data: Data, url: URL) {
+        let sampleRate: Float64 = 44100 / 2 / 2 / 2 / 2 / 2 / 2
+        writePCM(data: data, url: url, sampleRate: sampleRate, numberOfChannels: 2)
+    }
+    
+    func writeWav(from image: UIImage, url: URL) {
+        let imageData = data(for: image)
+        writeWav(data: imageData, url: url)
     }
     
     func temporaryURL(fileExtension: String) -> URL {
