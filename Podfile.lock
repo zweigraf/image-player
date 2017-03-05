@@ -1,0 +1,32 @@
+PODS:
+  - LambdaKit (0.0.3)
+  - Permission/Core (2.0.3)
+  - Permission/Photos (2.0.3):
+    - Permission/Core
+  - PureLayout (3.0.2)
+  - Sensitive (3.0)
+  - SuperDelegate (0.9.0)
+  - SVProgressHUD (2.1.2)
+  - SwiftyUserDefaults (3.0.0)
+
+DEPENDENCIES:
+  - LambdaKit (~> 0.0.3)
+  - Permission/Photos
+  - PureLayout (~> 3.0.2)
+  - Sensitive (~> 3.0)
+  - SuperDelegate (~> 0.9.0)
+  - SVProgressHUD (~> 2.1.2)
+  - SwiftyUserDefaults (~> 3.0.0)
+
+SPEC CHECKSUMS:
+  LambdaKit: 87d603283c5915077fc09a8cbba03b4c2a48d2bf
+  Permission: ef50195e97672de1946f98da7fd71fbfbcf9c23f
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  Sensitive: dee25cff31a5420e9fa4d4e2f0e1cef8a46f701f
+  SuperDelegate: b70c7afddf8525217d0e074b850b8ea3cc6f8abd
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
+
+PODFILE CHECKSUM: bf31c8addd5e3ea9f47e17b85513658351d84a62
+
+COCOAPODS: 1.2.0
