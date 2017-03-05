@@ -72,11 +72,11 @@ class ViewController: UIViewController {
         let data = UIImageJPEGRepresentation(image, 0.8)!
         
         let formatID = kAudioFormatLinearPCM
-        let formatFlags = AudioFormatFlags(kLinearPCMFormatFlagIsSignedInteger/* | kLinearPCMFormatFlagIsPacked*/)
+        let formatFlags = AudioFormatFlags(kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked)
         let shortSize = UInt32(MemoryLayout<CShort>.stride)
-        let bytesPerFrame = shortSize * 1
+        let bytesPerFrame = shortSize * 2
         
-        var streamDesc = AudioStreamBasicDescription(mSampleRate: 44100, mFormatID: formatID, mFormatFlags: formatFlags, mBytesPerPacket: bytesPerFrame, mFramesPerPacket: 1, mBytesPerFrame: bytesPerFrame, mChannelsPerFrame: 1, mBitsPerChannel: shortSize * 4, mReserved: 0)
+        var streamDesc = AudioStreamBasicDescription(mSampleRate: 44100, mFormatID: formatID, mFormatFlags: formatFlags, mBytesPerPacket: bytesPerFrame, mFramesPerPacket: 1, mBytesPerFrame: bytesPerFrame, mChannelsPerFrame: 2, mBitsPerChannel: shortSize * 8, mReserved: 0)
         
         var channelLayout = AudioChannelLayout()
         channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_Mono
@@ -90,7 +90,7 @@ class ViewController: UIViewController {
         
         let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: data.count)
         data.copyBytes(to: intPointer, count: data.count)
-        let buffer = AudioBuffer(mNumberChannels: 1, mDataByteSize: UInt32(data.count), mData: intPointer)
+        let buffer = AudioBuffer(mNumberChannels: 2, mDataByteSize: UInt32(data.count), mData: intPointer)
         var bufferList = AudioBufferList(mNumberBuffers: 1, mBuffers: buffer)
         
         let numberOfFrames = UInt32(data.count) / bytesPerFrame
