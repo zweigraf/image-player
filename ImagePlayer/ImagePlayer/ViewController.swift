@@ -75,8 +75,9 @@ class ViewController: UIViewController {
         let formatFlags = AudioFormatFlags(kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked)
         let shortSize = UInt32(MemoryLayout<CShort>.stride)
         let bytesPerFrame = shortSize * 2
+        let sampleRate: Float64 = 44100 / 2 / 2 / 2 / 2 / 2 / 2
         
-        var streamDesc = AudioStreamBasicDescription(mSampleRate: 44100, mFormatID: formatID, mFormatFlags: formatFlags, mBytesPerPacket: bytesPerFrame, mFramesPerPacket: 1, mBytesPerFrame: bytesPerFrame, mChannelsPerFrame: 2, mBitsPerChannel: shortSize * 8, mReserved: 0)
+        var streamDesc = AudioStreamBasicDescription(mSampleRate: sampleRate, mFormatID: formatID, mFormatFlags: formatFlags, mBytesPerPacket: bytesPerFrame, mFramesPerPacket: 1, mBytesPerFrame: bytesPerFrame, mChannelsPerFrame: 2, mBitsPerChannel: shortSize * 8, mReserved: 0)
         
         var channelLayout = AudioChannelLayout()
         channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_Stereo
