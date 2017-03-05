@@ -11,6 +11,7 @@ import SuperDelegate
 
 @UIApplicationMain
 class AppDelegate: SuperDelegate, ApplicationLaunched {
+    var window: UIWindow?
     func setupApplication() {
     
     }
@@ -18,6 +19,7 @@ class AppDelegate: SuperDelegate, ApplicationLaunched {
         let window = UIWindow()
         window.rootViewController = ViewController()
         setup(mainWindow: window)
+        self.window = window
     }
 }
 
