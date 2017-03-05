@@ -79,7 +79,7 @@ class ViewController: UIViewController {
         var streamDesc = AudioStreamBasicDescription(mSampleRate: 44100, mFormatID: formatID, mFormatFlags: formatFlags, mBytesPerPacket: bytesPerFrame, mFramesPerPacket: 1, mBytesPerFrame: bytesPerFrame, mChannelsPerFrame: 2, mBitsPerChannel: shortSize * 8, mReserved: 0)
         
         var channelLayout = AudioChannelLayout()
-        channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_Mono
+        channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_Stereo
         
         let cfUrl = url as CFURL
         let fileType = kAudioFileWAVEType
@@ -96,6 +96,8 @@ class ViewController: UIViewController {
         let numberOfFrames = UInt32(data.count) / bytesPerFrame
         let writeStatus = ExtAudioFileWrite(outputFile!, numberOfFrames, &bufferList)
         print("write status \(writeStatus)")
+        let closeStatus = ExtAudioFileDispose(outputFile!)
+        print("close status \(closeStatus)")
     }
     
     func temporaryURL(fileExtension: String) -> URL {
