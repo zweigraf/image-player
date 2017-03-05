@@ -24,15 +24,6 @@ protocol ViewControllerUI {
 class MainViewController: UIViewController {
     // MARK: ✨ View Magic ✨
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        print("lol init")
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func loadView() {
         view = ui.view
     }
@@ -75,35 +66,49 @@ extension MainViewController {
                 print("no image")
                 return
             }
-            self?.handle(image: image)
+            self?.pick(image: image)
         }
         present(picker, animated: true, completion: nil)
     }
     
     func generate() {
         let image = currentImage!
-        let imageURL = temporaryURL(fileExtension: "jpg")
-        let wavURL = temporaryURL(fileExtension: "wav")
-        copy(image: image, to: imageURL)
-        writeWav(from: image, url: wavURL)
+        let sampleRate = SampleRate.availableRates[ui.segmentedControl.selectedSegmentIndex].float64Value
+        
+        let imageURL = MainViewController.temporaryURL(fileExtension: "jpg")
+        let wavURL = MainViewController.temporaryURL(fileExtension: "wav")
+        
+        MainViewController.copy(image: image, to: imageURL)
+        MainViewController.writeWav(from: image, url: wavURL, sampleRate: sampleRate)
+        
         playWav(url: wavURL)
     }
 }
 
 // MARK: - 🐫 Handling 🐫
 extension MainViewController {
-    func handle(image: UIImage) {
+    func pick(image: UIImage) {
         currentImage = image
+    }
+}
+
+// MARK: - 🔊 Playback 🔊
+extension MainViewController {
+    func playWav(url: URL) {
+        let player = AVPlayer(url: url)
+        let playerVC = AVPlayerViewController()
+        playerVC.player = player
+        present(playerVC, animated: true)
     }
 }
 
 // MARK: - 💾 Data Manipulation 💾
 extension MainViewController {
-    func jpegData(for image: UIImage, quality: CGFloat = 0.8) -> Data {
+    static func jpegData(for image: UIImage, quality: CGFloat = 0.8) -> Data {
         return UIImageJPEGRepresentation(image, 0.8)!
     }
     
-    func rawData(for image: UIImage) -> Data {
+    static func rawData(for image: UIImage) -> Data {
         let cgImage = image.cgImage!
         let width = cgImage.width
         let height = cgImage.height
@@ -123,19 +128,19 @@ extension MainViewController {
         return data
     }
     
-    func data(for image: UIImage) -> Data {
+    static func data(for image: UIImage) -> Data {
         return rawData(for: image)
     }
 }
 
 // MARK: - 🗄 File Stuff 🗄
 extension MainViewController {
-    func copy(image: UIImage, to location: URL) {
+    static func copy(image: UIImage, to location: URL) {
         let imageData = data(for: image)
         try! imageData.write(to: location)
     }
     
-    func temporaryURL(fileExtension: String) -> URL {
+    static func temporaryURL(fileExtension: String) -> URL {
         let uptime = mach_absolute_time()
         let filename = "\(uptime).\(fileExtension)"
         let tmpFolderString = (NSTemporaryDirectory() as NSString).appendingPathComponent(filename)
@@ -144,19 +149,18 @@ extension MainViewController {
     }
 }
 
-// MARK: - 🔊 Playback 🔊
-extension MainViewController {
-    func playWav(url: URL) {
-        let player = AVPlayer(url: url)
-        let playerVC = AVPlayerViewController()
-        playerVC.player = player
-        present(playerVC, animated: true)
-    }
-}
-
 // MARK: - 🎵 Audio 🎵
 extension MainViewController {
-    func writePCM(data: Data, url: URL, sampleRate: Float64 = 44100, numberOfChannels: UInt32 = 2) {
+    static func writeWav(from image: UIImage, url: URL, sampleRate: Float64) {
+        let imageData = MainViewController.data(for: image)
+        writeWav(data: imageData, url: url, sampleRate: sampleRate)
+    }
+    
+    static func writeWav(data: Data, url: URL, sampleRate: Float64) {
+        MainViewController.writePCM(data: data, url: url, sampleRate: sampleRate, numberOfChannels: 2)
+    }
+
+    static func writePCM(data: Data, url: URL, sampleRate: Float64 = 44100, numberOfChannels: UInt32 = 2) {
         let formatID = kAudioFormatLinearPCM
         let formatFlags = AudioFormatFlags(kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked)
         
@@ -187,16 +191,24 @@ extension MainViewController {
         let closeStatus = ExtAudioFileDispose(outputFile!)
         print("close status \(closeStatus)")
     }
+}
+
+enum SampleRate {
+    case rate(Float64)
     
-    func writeWav(data: Data, url: URL) {
-        let sampleRate: Float64 = 44100// / 2 / 2 / 2 / 2 / 2 / 2
-        writePCM(data: data, url: url, sampleRate: sampleRate, numberOfChannels: 2)
+    var stringValue: String {
+        return "\(float64Value)"
     }
     
-    func writeWav(from image: UIImage, url: URL) {
-        let imageData = data(for: image)
-        writeWav(data: imageData, url: url)
+    var float64Value: Float64 {
+        switch self {
+        case .rate(let sampleRate):
+            return sampleRate
+        }
     }
+
+    private static let standardRate: Float64 = 44100
+    static let availableRates: [SampleRate] = [.rate(standardRate), .rate(standardRate / 8), rate(standardRate / 64)]
 }
 
 // MARK: - MainViewControllerUI
@@ -207,19 +219,24 @@ class MainViewControllerUI: ViewControllerUI {
         let pickerButton = self.pickerButton
         view.addSubview(pickerButton)
         pickerButton.autoAlignAxis(toSuperviewAxis: .vertical)
-        pickerButton.autoPinEdge(toSuperviewMargin: .top)
+        pickerButton.autoPinEdge(toSuperviewEdge: .top, withInset: 36)
         
         let generateButton = self.generateButton
         view.addSubview(generateButton)
         generateButton.autoAlignAxis(toSuperviewAxis: .vertical)
         generateButton.autoPinEdge(toSuperviewMargin: .bottom)
         
+        let segmentedControl = self.segmentedControl
+        view.addSubview(segmentedControl)
+        segmentedControl.autoAlignAxis(toSuperviewAxis: .vertical)
+        segmentedControl.autoPinEdge(.bottom, to: .top, of: generateButton, withOffset: -16)
+        
         let imageView = self.imageView
         view.addSubview(imageView)
         imageView.autoPinEdge(toSuperviewMargin: .leading)
         imageView.autoPinEdge(toSuperviewMargin: .trailing)
         imageView.autoPinEdge(.top, to: .bottom, of: pickerButton, withOffset: 16)
-        imageView.autoPinEdge(.bottom, to: .top, of: generateButton, withOffset: 16)
+        imageView.autoPinEdge(.bottom, to: .top, of: segmentedControl, withOffset: -16)
         
         return view
     }()
@@ -242,5 +259,11 @@ class MainViewControllerUI: ViewControllerUI {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         return imageView
+    }()
+    
+    let segmentedControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: SampleRate.availableRates.map { $0.stringValue })
+        control.selectedSegmentIndex = 0
+        return control
     }()
 }
