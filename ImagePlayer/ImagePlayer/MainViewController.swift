@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  ImagePlayer
 //
 //  Created by Luis Reisewitz on 05.03.17.
@@ -15,8 +15,15 @@ import AVFoundation
 import AudioToolbox
 import CoreGraphics
 
-class ViewController: UIViewController {
+// MARK: - ViewControllerUI
+protocol ViewControllerUI {
+    var view: UIView { get }
+}
 
+// MARK: - ✨ View Controller ✨
+class MainViewController: UIViewController {
+    // MARK: ✨ View Magic ✨
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         print("lol init")
@@ -27,18 +34,35 @@ class ViewController: UIViewController {
     }
     
     override func loadView() {
-        let view = UIView()
-        let button = UIButton()
-        button.setTitle("Open Picker", for: .normal)
-        button.onTap { [weak self] _ in
-            self?.presentPicker()
+        view = ui.view
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        ui.pickerButton.onTap { [weak self] _ in
+            self?.openPicker()
         }
-        view.addSubview(button)
-        button.autoCenterInSuperview()
-        self.view = view
+        ui.generateButton.onTap { [weak self] _ in
+            self?.generate()
+        }
     }
 
-    func presentPicker() {
+    // MARK: Properties
+    
+    let ui = MainViewControllerUI()
+    
+    var currentImage: UIImage? = nil {
+        didSet {
+            ui.imageView.image = currentImage
+            ui.generateButton.isEnabled = currentImage != nil
+        }
+    }
+}
+
+// MARK: - 👆 UI Actions 👆
+extension MainViewController {
+    func openPicker() {
         let picker = UIImagePickerController()
         picker.didCancel = { picker in
             picker.dismiss(animated: true)
@@ -56,14 +80,25 @@ class ViewController: UIViewController {
         present(picker, animated: true, completion: nil)
     }
     
-    func handle(image: UIImage) {
+    func generate() {
+        let image = currentImage!
         let imageURL = temporaryURL(fileExtension: "jpg")
         let wavURL = temporaryURL(fileExtension: "wav")
         copy(image: image, to: imageURL)
         writeWav(from: image, url: wavURL)
         playWav(url: wavURL)
     }
-    
+}
+
+// MARK: - 🐫 Handling 🐫
+extension MainViewController {
+    func handle(image: UIImage) {
+        currentImage = image
+    }
+}
+
+// MARK: - 💾 Data Manipulation 💾
+extension MainViewController {
     func jpegData(for image: UIImage, quality: CGFloat = 0.8) -> Data {
         return UIImageJPEGRepresentation(image, 0.8)!
     }
@@ -72,7 +107,7 @@ class ViewController: UIViewController {
         let cgImage = image.cgImage!
         let width = cgImage.width
         let height = cgImage.height
-
+        
         let bytesPerPixel = 4
         let bytesPerRow = bytesPerPixel * width
         let bitsPerComponent = 8
@@ -91,12 +126,36 @@ class ViewController: UIViewController {
     func data(for image: UIImage) -> Data {
         return rawData(for: image)
     }
-    
+}
+
+// MARK: - 🗄 File Stuff 🗄
+extension MainViewController {
     func copy(image: UIImage, to location: URL) {
         let imageData = data(for: image)
         try! imageData.write(to: location)
     }
     
+    func temporaryURL(fileExtension: String) -> URL {
+        let uptime = mach_absolute_time()
+        let filename = "\(uptime).\(fileExtension)"
+        let tmpFolderString = (NSTemporaryDirectory() as NSString).appendingPathComponent(filename)
+        print(tmpFolderString)
+        return URL(fileURLWithPath: tmpFolderString)
+    }
+}
+
+// MARK: - 🔊 Playback 🔊
+extension MainViewController {
+    func playWav(url: URL) {
+        let player = AVPlayer(url: url)
+        let playerVC = AVPlayerViewController()
+        playerVC.player = player
+        present(playerVC, animated: true)
+    }
+}
+
+// MARK: - 🎵 Audio 🎵
+extension MainViewController {
     func writePCM(data: Data, url: URL, sampleRate: Float64 = 44100, numberOfChannels: UInt32 = 2) {
         let formatID = kAudioFormatLinearPCM
         let formatFlags = AudioFormatFlags(kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked)
@@ -130,7 +189,7 @@ class ViewController: UIViewController {
     }
     
     func writeWav(data: Data, url: URL) {
-        let sampleRate: Float64 = 44100 / 2 / 2 / 2 / 2 / 2 / 2
+        let sampleRate: Float64 = 44100// / 2 / 2 / 2 / 2 / 2 / 2
         writePCM(data: data, url: url, sampleRate: sampleRate, numberOfChannels: 2)
     }
     
@@ -138,20 +197,50 @@ class ViewController: UIViewController {
         let imageData = data(for: image)
         writeWav(data: imageData, url: url)
     }
-    
-    func temporaryURL(fileExtension: String) -> URL {
-        let uptime = mach_absolute_time()
-        let filename = "\(uptime).\(fileExtension)"
-        let tmpFolderString = (NSTemporaryDirectory() as NSString).appendingPathComponent(filename)
-        print(tmpFolderString)
-        return URL(fileURLWithPath: tmpFolderString)
-    }
-    
-    func playWav(url: URL) {
-        let player = AVPlayer(url: url)
-        let playerVC = AVPlayerViewController()
-        playerVC.player = player
-        present(playerVC, animated: true)
-    }
 }
 
+// MARK: - MainViewControllerUI
+class MainViewControllerUI: ViewControllerUI {
+    lazy var view: UIView = {
+        let view = UIView()
+        
+        let pickerButton = self.pickerButton
+        view.addSubview(pickerButton)
+        pickerButton.autoAlignAxis(toSuperviewAxis: .vertical)
+        pickerButton.autoPinEdge(toSuperviewMargin: .top)
+        
+        let generateButton = self.generateButton
+        view.addSubview(generateButton)
+        generateButton.autoAlignAxis(toSuperviewAxis: .vertical)
+        generateButton.autoPinEdge(toSuperviewMargin: .bottom)
+        
+        let imageView = self.imageView
+        view.addSubview(imageView)
+        imageView.autoPinEdge(toSuperviewMargin: .leading)
+        imageView.autoPinEdge(toSuperviewMargin: .trailing)
+        imageView.autoPinEdge(.top, to: .bottom, of: pickerButton, withOffset: 16)
+        imageView.autoPinEdge(.bottom, to: .top, of: generateButton, withOffset: 16)
+        
+        return view
+    }()
+    
+    let pickerButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Open Picker", for: .normal)
+        return button
+    }()
+    
+    let generateButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Generate", for: .normal)
+        // false by default, enabled by selecting image
+        button.isEnabled = false
+        return button
+    }()
+    
+    let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+}

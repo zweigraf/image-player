@@ -17,7 +17,7 @@ class AppDelegate: SuperDelegate, ApplicationLaunched {
     }
     func loadInterface(launchItem: LaunchItem) {
         let window = UIWindow()
-        window.rootViewController = ViewController()
+        window.rootViewController = MainViewController()
         setup(mainWindow: window)
         self.window = window
     }
