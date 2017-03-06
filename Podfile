@@ -35,7 +35,7 @@ target 'ImagePlayer' do
 
   # A unified API to ask for permissions on iOS
   # https://github.com/delba/Permission
-  pod 'Permission/Photos'
+  pod 'Permission/Photos', '~> 2.0.3'
 
   target 'ImagePlayerTests' do
     inherit! :search_paths
