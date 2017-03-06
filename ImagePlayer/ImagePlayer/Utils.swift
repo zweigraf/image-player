@@ -28,13 +28,19 @@ extension Utils {
         let bitsPerComponent = 8
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let size = bytesPerRow * height
-        let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
         let bitmapInfo: CGBitmapInfo = cgImage.bitmapInfo
+        let size = bytesPerRow * height
+        
+        // Initialize Pointer. Need to clean it up later ⚠️
+        let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
         
         let context = CGContext(data: intPointer, width: width, height: height, bitsPerComponent: bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)
         context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: width, height: height))
         let data = Data(bytes: intPointer, count: size)
+        
+        // Cleanup our Pointer 🚿
+        intPointer.deinitialize()
+        intPointer.deallocate(capacity: size)
         return data
     }
     
@@ -81,6 +87,7 @@ extension Utils {
         let result = ExtAudioFileCreateWithURL(cfUrl, fileType, &streamDesc, &channelLayout, 0, &outputFile)
         print("create result \(result)")
         
+        // Initialize Pointer. Need to clean it up later ⚠️
         let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: data.count)
         data.copyBytes(to: intPointer, count: data.count)
         
@@ -92,6 +99,10 @@ extension Utils {
         print("write status \(writeStatus)")
         let closeStatus = ExtAudioFileDispose(outputFile!)
         print("close status \(closeStatus)")
+
+        // Cleanup our Pointer 🚿
+        intPointer.deinitialize()
+        intPointer.deallocate(capacity: data.count)
     }
 }
 
@@ -118,7 +129,6 @@ extension URL {
         let uptime = mach_absolute_time()
         let filename = "\(uptime).\(fileExtension)"
         let tmpFolderString = (NSTemporaryDirectory() as NSString).appendingPathComponent(filename)
-        print(tmpFolderString)
         self.init(fileURLWithPath: tmpFolderString)
     }
 }

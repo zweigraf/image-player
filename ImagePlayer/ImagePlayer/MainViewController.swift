@@ -77,6 +77,7 @@ extension MainViewController {
     }
     
     func generate() {
+        // FIXME: does not show. why?
         SVProgressHUD.show()
         
         let image = currentImage!
