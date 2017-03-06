@@ -9,15 +9,15 @@ target 'ImagePlayer' do
 
   # Pods for ImagePlayer
 
-  # Providing a clean app delegate interface and protection from bugs in the app lifecycle
+  # SuperDelegate provides a clean application delegate interface and protects you from bugs in the application lifecycle
   # https://github.com/square/SuperDelegate
   pod 'SuperDelegate', '~> 0.9.0'
 
-  # Simple and powerfull auto layout
+  # The ultimate API for iOS & OS X Auto Layout — impressively simple, immensely powerful. Objective-C and Swift compatible.
   # https://github.com/PureLayout/PureLayout
   pod 'PureLayout', '~> 3.0.2'
 
-  # Adding gesture recognizers with block handlers
+  # Fresh look at work with gestures in Swift.
   # https://github.com/igormatyushkin014/Sensitive
   pod 'Sensitive', '~> 3.0'
 
@@ -25,7 +25,7 @@ target 'ImagePlayer' do
   # https://github.com/radex/SwiftyUserDefaults
   pod 'SwiftyUserDefaults', '~> 3.0.0'
 
-  # A clean and lightweight progress HUD
+  # A clean and lightweight progress HUD for your iOS and tvOS app.
   # https://github.com/SVProgressHUD/SVProgressHUD
   pod 'SVProgressHUD', '~> 2.1.2'
 
@@ -33,8 +33,8 @@ target 'ImagePlayer' do
   # https://github.com/Reflejo/LambdaKit
   pod 'LambdaKit', '~> 0.0.3'
 
-  # https://github.com/delba/Permission
   # A unified API to ask for permissions on iOS
+  # https://github.com/delba/Permission
   pod 'Permission/Photos'
 
   target 'ImagePlayerTests' do
