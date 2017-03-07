@@ -55,6 +55,13 @@ extension Utils {
         let imageData = data(for: image)
         try! imageData.write(to: location)
     }
+    
+    static func cleanTempFolder() {
+        _ = try? FileManager.default.contentsOfDirectory(at: URL.tempFolder, includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions(rawValue: 0))
+        .forEach { url in
+            _ = try? FileManager.default.removeItem(at: url)
+        }
+    }
 }
 
 // MARK: - 🎵 Audio 🎵
@@ -124,6 +131,7 @@ enum SampleRate {
     static let availableRates: [SampleRate] = [.rate(standardRate), .rate(standardRate / 8), rate(standardRate / 64)]
 }
 
+// MARK: - URL Extension
 extension URL {
     init(temporaryURLWithFileExtension fileExtension: String) {
         let uptime = mach_absolute_time()
@@ -131,4 +139,14 @@ extension URL {
         let tmpFolderString = (NSTemporaryDirectory() as NSString).appendingPathComponent(filename)
         self.init(fileURLWithPath: tmpFolderString)
     }
+    
+    static var tempFolder: URL {
+        let tmpFolderString = NSTemporaryDirectory()
+        return URL(fileURLWithPath: tmpFolderString)
+    }
+}
+
+// MARK: - DispatchQueue Extension
+extension DispatchQueue {
+    @nonobjc static var background: DispatchQueue = DispatchQueue.global(qos: .background)
 }
