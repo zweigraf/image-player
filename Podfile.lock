@@ -1,5 +1,6 @@
 PODS:
   - LambdaKit (0.0.3)
+  - MIKMIDI (1.6.1)
   - Permission/Core (2.0.3)
   - Permission/Photos (2.0.3):
     - Permission/Core
@@ -11,7 +12,8 @@ PODS:
 
 DEPENDENCIES:
   - LambdaKit (~> 0.0.3)
-  - Permission/Photos
+  - MIKMIDI (~> 1.6.1)
+  - Permission/Photos (~> 2.0.3)
   - PureLayout (~> 3.0.2)
   - Sensitive (~> 3.0)
   - SuperDelegate (~> 0.9.0)
@@ -20,6 +22,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   LambdaKit: 87d603283c5915077fc09a8cbba03b4c2a48d2bf
+  MIKMIDI: ba2dae32a11dc4f1d980699e49ea1e30d013d101
   Permission: ef50195e97672de1946f98da7fd71fbfbcf9c23f
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Sensitive: dee25cff31a5420e9fa4d4e2f0e1cef8a46f701f
@@ -27,6 +30,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
-PODFILE CHECKSUM: bf31c8addd5e3ea9f47e17b85513658351d84a62
+PODFILE CHECKSUM: 6e7d7893225e5abed364532b2003be46e7990cde
 
 COCOAPODS: 1.2.0

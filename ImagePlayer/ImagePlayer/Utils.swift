@@ -9,6 +9,7 @@
 import UIKit
 import AudioToolbox
 import CoreGraphics
+import MIKMIDI
 
 struct Utils {}
 
@@ -107,6 +108,56 @@ extension Utils {
         let closeStatus = ExtAudioFileDispose(outputFile!)
         print("close status \(closeStatus)")
 
+        // Cleanup our Pointer 🚿
+        intPointer.deinitialize()
+        intPointer.deallocate(capacity: data.count)
+    }
+    
+    static func writeMidi(from image: UIImage, url: URL) {
+        let imageData = data(for: image)
+        writeMidi(from: imageData, url: url)
+    }
+    
+    static func writeMidi(from data: Data, url: URL) {
+        // Initialize Pointer. Need to clean it up later ⚠️
+        let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: data.count)
+        data.copyBytes(to: intPointer, count: data.count)
+        
+        
+        let sequence = MIKMIDISequence()
+        let redTrack = try! sequence.addTrack()
+/*        let greenTrack = try! sequence.addTrack()
+        let blueTrack = try! sequence.addTrack()
+        let alphaTrack = try! sequence.addTrack()*/
+        
+        // TODO: try using a duration for the note
+        // Iterating through all data in 4-step, ignoring if there are any rest bytes
+        let iterations = data.count / 4
+        for iteration in 0...1000 {
+            let r = (intPointer + iteration * 4 + 0).pointee
+            var redNote = MIDINoteMessage(channel: 1, note: r, velocity: UInt8.max, releaseVelocity: 0, duration: 1)
+            let redEvent = MIKMIDIEvent(timeStamp: MusicTimeStamp(iteration), midiEventType: .midiNoteMessage, data: Data(bytes: &redNote, count: MemoryLayout<MIDINoteMessage>.size))
+            redTrack.addEvent(redEvent!)
+            
+            /*let g = intPointer + iteration * 4 + 1
+            let b = intPointer + iteration * 4 + 2
+            let a = intPointer + iteration * 4 + 3*/
+        }
+        
+        /*var timestamp = 0
+        data.enumerateBytes { (pointer, _, stop) in
+            pointer.forEach({ (value) in
+                var redNote = MIDINoteMessage(channel: 1, note: value, velocity: UInt8.max, releaseVelocity: 0, duration: 1)
+                let redEvent = MIKMIDIEvent(timeStamp: MusicTimeStamp(timestamp), midiEventType: .midiNoteMessage, data: Data(bytes: &redNote, count: MemoryLayout<MIDINoteMessage>.size))
+                redTrack.addEvent(redEvent!)
+                timestamp += 1
+                stop = timestamp == 1000
+            })
+        }*/
+        
+        try! sequence.write(to: url)
+        
+        
         // Cleanup our Pointer 🚿
         intPointer.deinitialize()
         intPointer.deallocate(capacity: data.count)

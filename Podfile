@@ -37,6 +37,10 @@ target 'ImagePlayer' do
   # https://github.com/delba/Permission
   pod 'Permission/Photos', '~> 2.0.3'
 
+  # MIDI Library for Objective-C and Swift OS X and iOS apps.
+  # https://github.com/mixedinkey-opensource/MIKMIDI
+  pod 'MIKMIDI', '~> 1.6.1'
+
   target 'ImagePlayerTests' do
     inherit! :search_paths
     # Pods for testing

@@ -13,6 +13,7 @@ import PureLayout
 import AVKit
 import AVFoundation
 import SVProgressHUD
+import MIKMIDI
 
 // MARK: - ViewControllerUI
 protocol ViewControllerUI {
@@ -49,6 +50,10 @@ class MainViewController: UIViewController {
         // Clean up old files
         Utils.cleanTempFolder()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        sequencer?.stop()
+    }
 
     // MARK: Properties
     
@@ -61,6 +66,8 @@ class MainViewController: UIViewController {
             ui.bottomBackgroundView.isHidden = generateElementsHidden
         }
     }
+    
+    var sequencer: MIKMIDISequencer?
 }
 
 // MARK: - 👆 UI Actions 👆
@@ -87,17 +94,20 @@ extension MainViewController {
         
         DispatchQueue.background.async {
             let image = self.currentImage!
-            let sampleRate = SampleRate.availableRates[self.ui.sampleRateSegmentedControl.selectedSegmentIndex].float64Value
+            // let sampleRate = SampleRate.availableRates[self.ui.sampleRateSegmentedControl.selectedSegmentIndex].float64Value
             
             let imageURL = URL(temporaryURLWithFileExtension: "jpg")
-            let wavURL = URL(temporaryURLWithFileExtension: "wav")
+            //let wavURL = URL(temporaryURLWithFileExtension: "wav")
+            let midiURL = URL(temporaryURLWithFileExtension: "midi")
             
             Utils.copy(image: image, to: imageURL)
-            Utils.writeWav(from: image, url: wavURL, sampleRate: sampleRate)
+            // Utils.writeWav(from: image, url: wavURL, sampleRate: sampleRate)
+            Utils.writeMidi(from: image, url: midiURL)
             
             SVProgressHUD.dismiss()
             DispatchQueue.main.async {
-                self.playWav(url: wavURL)
+                //self.playWav(url: wavURL)
+                self.playMidi(from: midiURL)
             }
         }
     }
@@ -117,6 +127,15 @@ extension MainViewController {
         let playerVC = AVPlayerViewController()
         playerVC.player = player
         present(playerVC, animated: true)
+    }
+    
+    
+    func playMidi(from url: URL) {
+        let sequence = try! MIKMIDISequence(fileAt: url)
+        print(sequence.setOverallTempo(240))
+        sequencer = MIKMIDISequencer(sequence: sequence)
+        
+        sequencer!.startPlayback()
     }
 }
 
