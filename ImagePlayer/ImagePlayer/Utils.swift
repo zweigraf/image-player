@@ -135,12 +135,13 @@ extension Utils {
         let iterations = data.count / 4
         for iteration in 0...1000 {
             let r = (intPointer + iteration * 4 + 0).pointee
-            var redNote = MIDINoteMessage(channel: 1, note: r, velocity: UInt8.max, releaseVelocity: 0, duration: 1)
+            let g = (intPointer + iteration * 4 + 1).pointee
+            let b = (intPointer + iteration * 4 + 2).pointee
+            var redNote = MIDINoteMessage(channel: 1, note: r, velocity: g, releaseVelocity: 0, duration: Float32(b) / 25)
             let redEvent = MIKMIDIEvent(timeStamp: MusicTimeStamp(iteration), midiEventType: .midiNoteMessage, data: Data(bytes: &redNote, count: MemoryLayout<MIDINoteMessage>.size))
             redTrack.addEvent(redEvent!)
             
-            /*let g = intPointer + iteration * 4 + 1
-            let b = intPointer + iteration * 4 + 2
+            /*
             let a = intPointer + iteration * 4 + 3*/
         }
         
