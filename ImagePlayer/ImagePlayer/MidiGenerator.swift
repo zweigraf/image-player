@@ -39,10 +39,10 @@ class MidiGenerator: ImagePlaying {
     class func writeMidi(from image: UIImage, url: URL) {
         print("midi gernator writemidi")
         let imageData = Utils.data(for: image)
-        writeMidi(from: imageData, url: url)
+        try? writeMidi(from: imageData, url: url)
     }
     
-    static func writeMidi(from data: Data, url: URL) {
+    static func writeMidi(from data: Data, url: URL) throws {
         // Initialize Pointer. Need to clean it up later ⚠️
         let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: data.count)
         data.copyBytes(to: intPointer, count: data.count)
@@ -54,9 +54,8 @@ class MidiGenerator: ImagePlaying {
          let blueTrack = try! sequence.addTrack()
          let alphaTrack = try! sequence.addTrack()*/
         
-        // TODO: try using a duration for the note
         // Iterating through all data in 4-step, ignoring if there are any rest bytes
-        let iterations = data.count / 4
+//        let iterations = data.count / 4
         for iteration in 0...1000 {
             let r = (intPointer + iteration * 4 + 0).pointee
             let g = (intPointer + iteration * 4 + 1).pointee
@@ -69,19 +68,7 @@ class MidiGenerator: ImagePlaying {
              let a = intPointer + iteration * 4 + 3*/
         }
         
-        /*var timestamp = 0
-         data.enumerateBytes { (pointer, _, stop) in
-         pointer.forEach({ (value) in
-         var redNote = MIDINoteMessage(channel: 1, note: value, velocity: UInt8.max, releaseVelocity: 0, duration: 1)
-         let redEvent = MIKMIDIEvent(timeStamp: MusicTimeStamp(timestamp), midiEventType: .midiNoteMessage, data: Data(bytes: &redNote, count: MemoryLayout<MIDINoteMessage>.size))
-         redTrack.addEvent(redEvent!)
-         timestamp += 1
-         stop = timestamp == 1000
-         })
-         }*/
-        
         try! sequence.write(to: url)
-        
         
         // Cleanup our Pointer 🚿
         intPointer.deinitialize()
@@ -92,8 +79,8 @@ class MidiGenerator: ImagePlaying {
 // MARK: - Internal Playback Controls
 fileprivate extension MidiGenerator {
     func playMidi(from url: URL) {
-        let sequence = try! MIKMIDISequence(fileAt: url)
-        sequence.setOverallTempo(240)
+        guard let sequence = try? MIKMIDISequence(fileAt: url) else { return }
+//        sequence.setOverallTempo(240)
         sequencer = MIKMIDISequencer(sequence: sequence)
         
         sequencer?.startPlayback()
@@ -103,4 +90,3 @@ fileprivate extension MidiGenerator {
         sequencer?.stop()
     }
 }
-

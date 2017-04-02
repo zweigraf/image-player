@@ -16,6 +16,6 @@ class DownscalingMidiGenerator: MidiGenerator {
     override class func writeMidi(from image: UIImage, url: URL) {
         print("downscaling midi gernator writemidi")
         let imageData = Utils.data(for: image)
-        writeMidi(from: imageData, url: url)
+        try! writeMidi(from: imageData, url: url)
     }
 }

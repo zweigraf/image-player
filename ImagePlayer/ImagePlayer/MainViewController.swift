@@ -93,7 +93,7 @@ extension MainViewController {
         
         SVProgressHUD.show()
         DispatchQueue.background.async {
-            self.generator = PCMGenerator(with: image, for: self)
+            self.generator = MidiGenerator(with: image, for: self)
             self.generator?.prepareToPlay()
             
             SVProgressHUD.dismiss()
