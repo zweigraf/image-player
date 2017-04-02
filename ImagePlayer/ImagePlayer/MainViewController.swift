@@ -38,7 +38,6 @@ class MainViewController: UIViewController {
         ui.generateButton.onTap { [weak self] _ in
             self?.generate()
         }
-        ui.sampleRateSegmentedControl.selectedSegmentIndex = 0
         
         currentImage = nil
         
@@ -76,7 +75,8 @@ extension MainViewController {
         }
         picker.didFinishPickingMedia = { [weak self] picker, info in
             picker.dismiss(animated: true)
-            let sourceimage = info[UIImagePickerControllerEditedImage] as? UIImage ?? info[UIImagePickerControllerOriginalImage] as? UIImage
+            let sourceimage = info[UIImagePickerControllerEditedImage] as? UIImage
+                ?? info[UIImagePickerControllerOriginalImage] as? UIImage
             guard let image = sourceimage else {
                 print("no image")
                 return
@@ -93,7 +93,7 @@ extension MainViewController {
         
         SVProgressHUD.show()
         DispatchQueue.background.async {
-            self.generator = MidiGenerator(with: image, for: self)
+            self.generator = PCMGenerator(with: image, for: self)
             self.generator?.prepareToPlay()
             
             SVProgressHUD.dismiss()
@@ -144,13 +144,7 @@ class MainViewControllerUI: ViewControllerUI {
         bottomBGContentView.addSubview(generateButton)
         generateButton.autoAlignAxis(toSuperviewAxis: .vertical)
         generateButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
-        
-        let segmentedControl = self.sampleRateSegmentedControl
-        bottomBGContentView.addSubview(segmentedControl)
-        segmentedControl.autoAlignAxis(toSuperviewAxis: .vertical)
-        segmentedControl.autoPinEdge(.bottom, to: .top, of: generateButton, withOffset: -16)
-        segmentedControl.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
-       
+        generateButton.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
         self.bottomBackgroundView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         
         return view
@@ -172,12 +166,6 @@ class MainViewControllerUI: ViewControllerUI {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         return imageView
-    }()
-    
-    let sampleRateSegmentedControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: SampleRate.availableRates.map { $0.stringValue })
-        control.tintColor = .white
-        return control
     }()
     
     let topBackgroundView = MainViewControllerUI.backgroundView()

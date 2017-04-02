@@ -10,16 +10,20 @@ import UIKit
 import MIKMIDI
 
 class MidiGenerator: ImagePlaying {
+    // MARK: Properties
+    
     let midiURL = URL(temporaryURLWithFileExtension: "midi")
     var sequencer: MIKMIDISequencer?
     let image: UIImage
+    
+    // MARK: ImagePlaying Conformance
     
     required init(with image: UIImage, for viewController: UIViewController) {
         self.image = image
     }
     
     func prepareToPlay() {
-        MidiGenerator.writeMidi(from: image, url: midiURL)
+        type(of: self).writeMidi(from: image, url: midiURL)
     }
     
     func startPlayback() {
@@ -29,26 +33,11 @@ class MidiGenerator: ImagePlaying {
     func stopPlayback() {
         pauseMidi()
     }
-}
-
-// MARK: - Internal Playback Controls
-fileprivate extension MidiGenerator {
-    func playMidi(from url: URL) {
-        let sequence = try! MIKMIDISequence(fileAt: url)
-        sequence.setOverallTempo(240)
-        sequencer = MIKMIDISequencer(sequence: sequence)
-        
-        sequencer?.startPlayback()
-    }
     
-    func pauseMidi() {
-        sequencer?.stop()
-    }
-}
-
-// MARK: - Midi Writing
-fileprivate extension MidiGenerator {
-    static func writeMidi(from image: UIImage, url: URL) {
+    // MARK: Midi Writing
+    
+    class func writeMidi(from image: UIImage, url: URL) {
+        print("midi gernator writemidi")
         let imageData = Utils.data(for: image)
         writeMidi(from: imageData, url: url)
     }
@@ -99,3 +88,19 @@ fileprivate extension MidiGenerator {
         intPointer.deallocate(capacity: data.count)
     }
 }
+
+// MARK: - Internal Playback Controls
+fileprivate extension MidiGenerator {
+    func playMidi(from url: URL) {
+        let sequence = try! MIKMIDISequence(fileAt: url)
+        sequence.setOverallTempo(240)
+        sequencer = MIKMIDISequencer(sequence: sequence)
+        
+        sequencer?.startPlayback()
+    }
+    
+    func pauseMidi() {
+        sequencer?.stop()
+    }
+}
+
