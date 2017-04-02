@@ -17,9 +17,9 @@
 		A505C2241E6C5CDC0085B96E /* ImagePlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A505C2231E6C5CDC0085B96E /* ImagePlayerUITests.swift */; };
 		A505C2321E6CD9EC0085B96E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A505C2311E6CD9EC0085B96E /* Utils.swift */; };
 		A5D83C081E911A0800945DDC /* ImagePlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C071E911A0800945DDC /* ImagePlaying.swift */; };
-		A5D83C0A1E911AAE00945DDC /* MidiGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C091E911AAE00945DDC /* MidiGenerator.swift */; };
-		A5D83C0C1E911CDD00945DDC /* PCMGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C0B1E911CDD00945DDC /* PCMGenerator.swift */; };
-		A5D83C0E1E91209500945DDC /* DownscalingMidiGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C0D1E91209500945DDC /* DownscalingMidiGenerator.swift */; };
+		A5D83C131E912AFE00945DDC /* DownscalingMidiGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C101E912AFE00945DDC /* DownscalingMidiGenerator.swift */; };
+		A5D83C141E912AFE00945DDC /* MidiGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C111E912AFE00945DDC /* MidiGenerator.swift */; };
+		A5D83C151E912AFE00945DDC /* PCMGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C121E912AFE00945DDC /* PCMGenerator.swift */; };
 		EBD14A87D025E3BB332AB83F /* Pods_ImagePlayerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07980D63F3A4FF00E83C4C0C /* Pods_ImagePlayerTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,9 +61,9 @@
 		A505C2251E6C5CDC0085B96E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A505C2311E6CD9EC0085B96E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A5D83C071E911A0800945DDC /* ImagePlaying.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePlaying.swift; sourceTree = "<group>"; };
-		A5D83C091E911AAE00945DDC /* MidiGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MidiGenerator.swift; sourceTree = "<group>"; };
-		A5D83C0B1E911CDD00945DDC /* PCMGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCMGenerator.swift; sourceTree = "<group>"; };
-		A5D83C0D1E91209500945DDC /* DownscalingMidiGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownscalingMidiGenerator.swift; sourceTree = "<group>"; };
+		A5D83C101E912AFE00945DDC /* DownscalingMidiGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownscalingMidiGenerator.swift; sourceTree = "<group>"; };
+		A5D83C111E912AFE00945DDC /* MidiGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MidiGenerator.swift; sourceTree = "<group>"; };
+		A5D83C121E912AFE00945DDC /* PCMGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCMGenerator.swift; sourceTree = "<group>"; };
 		CE85211DB2C33ED2C5AC5703 /* Pods-ImagePlayerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePlayerUITests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-ImagePlayerUITests/Pods-ImagePlayerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DCB703091545F28BE9B30070 /* Pods-ImagePlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePlayer.release.xcconfig"; path = "../Pods/Target Support Files/Pods-ImagePlayer/Pods-ImagePlayer.release.xcconfig"; sourceTree = "<group>"; };
 		EE3F3C20552CDE2DCD8B5D80 /* Pods-ImagePlayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePlayerTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-ImagePlayerTests/Pods-ImagePlayerTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -145,6 +145,7 @@
 		A505C2021E6C5CDC0085B96E /* ImagePlayer */ = {
 			isa = PBXGroup;
 			children = (
+				A5D83C0F1E912AFE00945DDC /* Generators */,
 				A505C2031E6C5CDC0085B96E /* AppDelegate.swift */,
 				A505C2051E6C5CDC0085B96E /* MainViewController.swift */,
 				A505C20A1E6C5CDC0085B96E /* Assets.xcassets */,
@@ -152,9 +153,6 @@
 				A505C20F1E6C5CDC0085B96E /* Info.plist */,
 				A505C2311E6CD9EC0085B96E /* Utils.swift */,
 				A5D83C071E911A0800945DDC /* ImagePlaying.swift */,
-				A5D83C091E911AAE00945DDC /* MidiGenerator.swift */,
-				A5D83C0D1E91209500945DDC /* DownscalingMidiGenerator.swift */,
-				A5D83C0B1E911CDD00945DDC /* PCMGenerator.swift */,
 			);
 			path = ImagePlayer;
 			sourceTree = "<group>";
@@ -175,6 +173,16 @@
 				A505C2251E6C5CDC0085B96E /* Info.plist */,
 			);
 			path = ImagePlayerUITests;
+			sourceTree = "<group>";
+		};
+		A5D83C0F1E912AFE00945DDC /* Generators */ = {
+			isa = PBXGroup;
+			children = (
+				A5D83C101E912AFE00945DDC /* DownscalingMidiGenerator.swift */,
+				A5D83C111E912AFE00945DDC /* MidiGenerator.swift */,
+				A5D83C121E912AFE00945DDC /* PCMGenerator.swift */,
+			);
+			path = Generators;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -462,11 +470,11 @@
 			files = (
 				A5D83C081E911A0800945DDC /* ImagePlaying.swift in Sources */,
 				A505C2061E6C5CDC0085B96E /* MainViewController.swift in Sources */,
-				A5D83C0E1E91209500945DDC /* DownscalingMidiGenerator.swift in Sources */,
 				A505C2041E6C5CDC0085B96E /* AppDelegate.swift in Sources */,
+				A5D83C131E912AFE00945DDC /* DownscalingMidiGenerator.swift in Sources */,
+				A5D83C141E912AFE00945DDC /* MidiGenerator.swift in Sources */,
 				A505C2321E6CD9EC0085B96E /* Utils.swift in Sources */,
-				A5D83C0C1E911CDD00945DDC /* PCMGenerator.swift in Sources */,
-				A5D83C0A1E911AAE00945DDC /* MidiGenerator.swift in Sources */,
+				A5D83C151E912AFE00945DDC /* PCMGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

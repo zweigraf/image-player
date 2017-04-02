@@ -9,6 +9,7 @@ PODS:
   - SuperDelegate (0.9.0)
   - SVProgressHUD (2.1.2)
   - SwiftyUserDefaults (3.0.0)
+  - Toucan (0.6.0)
 
 DEPENDENCIES:
   - LambdaKit (~> 0.0.3)
@@ -19,6 +20,7 @@ DEPENDENCIES:
   - SuperDelegate (~> 0.9.0)
   - SVProgressHUD (~> 2.1.2)
   - SwiftyUserDefaults (~> 3.0.0)
+  - Toucan (~> 0.6)
 
 SPEC CHECKSUMS:
   LambdaKit: 87d603283c5915077fc09a8cbba03b4c2a48d2bf
@@ -29,7 +31,8 @@ SPEC CHECKSUMS:
   SuperDelegate: b70c7afddf8525217d0e074b850b8ea3cc6f8abd
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
+  Toucan: 47485bbc9cb4541ef6318d6886103e6eaf16e919
 
-PODFILE CHECKSUM: 6e7d7893225e5abed364532b2003be46e7990cde
+PODFILE CHECKSUM: d736a5f3bacc6417046189181031554c2faf70b7
 
 COCOAPODS: 1.2.0

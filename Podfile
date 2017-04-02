@@ -40,6 +40,10 @@ target 'ImagePlayer' do
   # MIDI Library for Objective-C and Swift OS X and iOS apps.
   # https://github.com/mixedinkey-opensource/MIKMIDI
   pod 'MIKMIDI', '~> 1.6.1'
+  
+  # Fabulous Image Processing in Swift
+  # https://github.com/gavinbunney/Toucan
+  pod 'Toucan', '~> 0.6'
 
   target 'ImagePlayerTests' do
     inherit! :search_paths
