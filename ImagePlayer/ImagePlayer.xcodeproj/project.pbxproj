@@ -16,8 +16,9 @@
 		A505C2191E6C5CDC0085B96E /* ImagePlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A505C2181E6C5CDC0085B96E /* ImagePlayerTests.swift */; };
 		A505C2241E6C5CDC0085B96E /* ImagePlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A505C2231E6C5CDC0085B96E /* ImagePlayerUITests.swift */; };
 		A505C2321E6CD9EC0085B96E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A505C2311E6CD9EC0085B96E /* Utils.swift */; };
+		A52A201C1F0CF86100A659E9 /* AudioKitGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A201B1F0CF86100A659E9 /* AudioKitGenerator.swift */; };
+		A52A201E1F0D1F6D00A659E9 /* DownscalingGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A201D1F0D1F6D00A659E9 /* DownscalingGenerator.swift */; };
 		A5D83C081E911A0800945DDC /* ImagePlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C071E911A0800945DDC /* ImagePlaying.swift */; };
-		A5D83C131E912AFE00945DDC /* DownscalingMidiGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C101E912AFE00945DDC /* DownscalingMidiGenerator.swift */; };
 		A5D83C141E912AFE00945DDC /* MidiGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C111E912AFE00945DDC /* MidiGenerator.swift */; };
 		A5D83C151E912AFE00945DDC /* PCMGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D83C121E912AFE00945DDC /* PCMGenerator.swift */; };
 		EBD14A87D025E3BB332AB83F /* Pods_ImagePlayerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07980D63F3A4FF00E83C4C0C /* Pods_ImagePlayerTests.framework */; };
@@ -60,8 +61,9 @@
 		A505C2231E6C5CDC0085B96E /* ImagePlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePlayerUITests.swift; sourceTree = "<group>"; };
 		A505C2251E6C5CDC0085B96E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A505C2311E6CD9EC0085B96E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		A52A201B1F0CF86100A659E9 /* AudioKitGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioKitGenerator.swift; sourceTree = "<group>"; };
+		A52A201D1F0D1F6D00A659E9 /* DownscalingGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownscalingGenerator.swift; sourceTree = "<group>"; };
 		A5D83C071E911A0800945DDC /* ImagePlaying.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePlaying.swift; sourceTree = "<group>"; };
-		A5D83C101E912AFE00945DDC /* DownscalingMidiGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownscalingMidiGenerator.swift; sourceTree = "<group>"; };
 		A5D83C111E912AFE00945DDC /* MidiGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MidiGenerator.swift; sourceTree = "<group>"; };
 		A5D83C121E912AFE00945DDC /* PCMGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PCMGenerator.swift; sourceTree = "<group>"; };
 		CE85211DB2C33ED2C5AC5703 /* Pods-ImagePlayerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePlayerUITests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-ImagePlayerUITests/Pods-ImagePlayerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -178,9 +180,10 @@
 		A5D83C0F1E912AFE00945DDC /* Generators */ = {
 			isa = PBXGroup;
 			children = (
-				A5D83C101E912AFE00945DDC /* DownscalingMidiGenerator.swift */,
 				A5D83C111E912AFE00945DDC /* MidiGenerator.swift */,
+				A52A201B1F0CF86100A659E9 /* AudioKitGenerator.swift */,
 				A5D83C121E912AFE00945DDC /* PCMGenerator.swift */,
+				A52A201D1F0D1F6D00A659E9 /* DownscalingGenerator.swift */,
 			);
 			path = Generators;
 			sourceTree = "<group>";
@@ -471,7 +474,8 @@
 				A5D83C081E911A0800945DDC /* ImagePlaying.swift in Sources */,
 				A505C2061E6C5CDC0085B96E /* MainViewController.swift in Sources */,
 				A505C2041E6C5CDC0085B96E /* AppDelegate.swift in Sources */,
-				A5D83C131E912AFE00945DDC /* DownscalingMidiGenerator.swift in Sources */,
+				A52A201C1F0CF86100A659E9 /* AudioKitGenerator.swift in Sources */,
+				A52A201E1F0D1F6D00A659E9 /* DownscalingGenerator.swift in Sources */,
 				A5D83C141E912AFE00945DDC /* MidiGenerator.swift in Sources */,
 				A505C2321E6CD9EC0085B96E /* Utils.swift in Sources */,
 				A5D83C151E912AFE00945DDC /* PCMGenerator.swift in Sources */,

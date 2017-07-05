@@ -63,6 +63,44 @@ extension Utils {
     }
 }
 
+// MARK: - 🏛 Math Stuff 🏛
+extension Utils {
+    static func average(of numbers: [Int]) -> Int {
+        return numbers.reduce(0, +) / numbers.count
+    }
+    
+    static func averageLuminosity(of data: Data) -> UInt8 {
+        // Initialize Pointer. Need to clean it up later ⚠️
+        let intPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: data.count)
+        data.copyBytes(to: intPointer, count: data.count)
+        
+        // Iterating through all data in 4-step, ignoring if there are any rest bytes
+        let iterations = data.count / 4
+        
+        var currentAverage: Double = 0
+        for iteration in 0...iterations {
+            let r = (intPointer + iteration * 4 + 0).pointee
+            let g = (intPointer + iteration * 4 + 1).pointee
+            let b = (intPointer + iteration * 4 + 2).pointee
+
+            // Ignoring alpha channel here, as it's constant
+            
+            // Standard RGB->Y conversion
+            let newDatum: Double = 0.299 * Double(r) + 0.587 * Double(g) + 0.114 * Double(b)
+            
+            // For iterative average formula see http://www.heikohoffmann.de/htmlthesis/node134.html
+            let calcIteration = iteration + 1
+            let diff = newDatum - currentAverage
+            currentAverage = currentAverage + ((1.0 / Double(calcIteration)) * diff)
+        }
+        
+        intPointer.deinitialize()
+        intPointer.deallocate(capacity: data.count)
+
+        return UInt8(currentAverage)
+    }
+}
+
 // MARK: - URL Extension
 extension URL {
     init(temporaryURLWithFileExtension fileExtension: String) {

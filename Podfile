@@ -44,6 +44,10 @@ target 'ImagePlayer' do
   # Fabulous Image Processing in Swift
   # https://github.com/gavinbunney/Toucan
   pod 'Toucan', '~> 0.6'
+  
+  # Swift audio synthesis, processing, & analysis platform for iOS, macOS and tvOS
+  # http://audiokit.io
+  pod 'AudioKit', '~> 3.7'
 
   target 'ImagePlayerTests' do
     inherit! :search_paths

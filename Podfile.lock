@@ -1,17 +1,19 @@
 PODS:
-  - LambdaKit (0.0.3)
+  - AudioKit (3.7.1)
+  - LambdaKit (0.0.4)
   - MIKMIDI (1.6.1)
-  - Permission/Core (2.0.3)
-  - Permission/Photos (2.0.3):
+  - Permission/Core (2.0.4)
+  - Permission/Photos (2.0.4):
     - Permission/Core
   - PureLayout (3.0.2)
-  - Sensitive (3.0)
+  - Sensitive (3.1.1)
   - SuperDelegate (0.9.0)
   - SVProgressHUD (2.1.2)
   - SwiftyUserDefaults (3.0.0)
   - Toucan (0.6.0)
 
 DEPENDENCIES:
+  - AudioKit (~> 3.7)
   - LambdaKit (~> 0.0.3)
   - MIKMIDI (~> 1.6.1)
   - Permission/Photos (~> 2.0.3)
@@ -23,16 +25,17 @@ DEPENDENCIES:
   - Toucan (~> 0.6)
 
 SPEC CHECKSUMS:
-  LambdaKit: 87d603283c5915077fc09a8cbba03b4c2a48d2bf
+  AudioKit: e04d3282bf904cdf7121965edb067177c6d1c7d1
+  LambdaKit: 24166f69b7c3371c14b945a0ec575906086f987d
   MIKMIDI: ba2dae32a11dc4f1d980699e49ea1e30d013d101
-  Permission: ef50195e97672de1946f98da7fd71fbfbcf9c23f
+  Permission: 6853b9694e66a6c9197468c66d1935c3629cbf9c
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  Sensitive: dee25cff31a5420e9fa4d4e2f0e1cef8a46f701f
+  Sensitive: 34d1efb1e1a938499adab4bbb5d4b50ff24b3d2f
   SuperDelegate: b70c7afddf8525217d0e074b850b8ea3cc6f8abd
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
   Toucan: 47485bbc9cb4541ef6318d6886103e6eaf16e919
 
-PODFILE CHECKSUM: d736a5f3bacc6417046189181031554c2faf70b7
+PODFILE CHECKSUM: bab97d4a1b8e0f0b32f438463b3d32f22e72cee1
 
 COCOAPODS: 1.2.0

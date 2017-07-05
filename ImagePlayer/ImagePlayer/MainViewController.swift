@@ -17,6 +17,8 @@ protocol ViewControllerUI {
     var view: UIView { get }
 }
 
+fileprivate let generatorClass: ImagePlaying.Type = DownscalingGenerator<AudioKitGenerator>.self
+
 // MARK: - ✨ View Controller ✨
 class MainViewController: UIViewController {
     // MARK: ✨ View Magic ✨
@@ -93,7 +95,7 @@ extension MainViewController {
         
         SVProgressHUD.show()
         DispatchQueue.background.async {
-            self.generator = DownscalingMidiGenerator(with: image, for: self)
+            self.generator = generatorClass.init(with: image, for: self)
             self.generator?.prepareToPlay()
             
             SVProgressHUD.dismiss()
