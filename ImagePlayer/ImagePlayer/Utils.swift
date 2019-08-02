@@ -39,7 +39,7 @@ extension Utils {
         
         // Cleanup our Pointer 🚿
         intPointer.deinitialize()
-        intPointer.deallocate(capacity: size)
+        intPointer.deallocate()
         return data
     }
     

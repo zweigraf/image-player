@@ -19,7 +19,7 @@ target 'ImagePlayer' do
 
   # Fresh look at work with gestures in Swift.
   # https://github.com/igormatyushkin014/Sensitive
-  pod 'Sensitive', '~> 3.0'
+  pod 'Sensitive'
 
   # Modern Swift API for NSUserDefaults
   # https://github.com/radex/SwiftyUserDefaults
@@ -31,7 +31,7 @@ target 'ImagePlayer' do
 
   # Closures on most used UIKit methods
   # https://github.com/Reflejo/LambdaKit
-  pod 'LambdaKit', '~> 0.0.3'
+  pod 'LambdaKit'
 
   # A unified API to ask for permissions on iOS
   # https://github.com/delba/Permission
@@ -47,7 +47,7 @@ target 'ImagePlayer' do
   
   # Swift audio synthesis, processing, & analysis platform for iOS, macOS and tvOS
   # http://audiokit.io
-  pod 'AudioKit', '~> 3.7'
+  pod 'AudioKit'
 
   target 'ImagePlayerTests' do
     inherit! :search_paths

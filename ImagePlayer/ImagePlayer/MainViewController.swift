@@ -17,7 +17,7 @@ protocol ViewControllerUI {
     var view: UIView { get }
 }
 
-fileprivate let generatorClass: ImagePlaying.Type = DownscalingGenerator<AudioKitGenerator>.self
+fileprivate let generatorClass: ImagePlaying.Type = DownscalingGenerator<MidiGenerator>.self
 
 // MARK: - ✨ View Controller ✨
 class MainViewController: UIViewController {
@@ -34,10 +34,10 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ui.pickerButton.onTap { [weak self] _ in
+        ui.pickerButton.onTap.handle { [weak self] _ in
             self?.openPicker()
         }
-        ui.generateButton.onTap { [weak self] _ in
+        ui.generateButton.onTap.handle { [weak self] _ in
             self?.generate()
         }
         
@@ -68,23 +68,27 @@ class MainViewController: UIViewController {
     var generator: ImagePlaying?
 }
 
+extension MainViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        picker.dismiss(animated: true)
+        let sourceimage = info[UIImagePickerControllerEditedImage] as? UIImage
+            ?? info[UIImagePickerControllerOriginalImage] as? UIImage
+        guard let image = sourceimage else {
+            print("no image")
+            return
+        }
+        pick(image: image)
+    }
+}
 // MARK: - 👆 UI Actions 👆
 extension MainViewController {
     func openPicker() {
         let picker = UIImagePickerController()
-        picker.didCancel = { picker in
-            picker.dismiss(animated: true)
-        }
-        picker.didFinishPickingMedia = { [weak self] picker, info in
-            picker.dismiss(animated: true)
-            let sourceimage = info[UIImagePickerControllerEditedImage] as? UIImage
-                ?? info[UIImagePickerControllerOriginalImage] as? UIImage
-            guard let image = sourceimage else {
-                print("no image")
-                return
-            }
-            self?.pick(image: image)
-        }
+        picker.delegate = self
         present(picker, animated: true, completion: nil)
     }
     
@@ -132,6 +136,7 @@ class MainViewControllerUI: ViewControllerUI {
         topBGContentView.addSubview(pickerButton)
         pickerButton.autoAlignAxis(toSuperviewAxis: .vertical)
         pickerButton.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
+        pickerButton.autoSetDimension(.height, toSize: 60)
         pickerButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
         
         self.topBackgroundView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
@@ -147,6 +152,7 @@ class MainViewControllerUI: ViewControllerUI {
         generateButton.autoAlignAxis(toSuperviewAxis: .vertical)
         generateButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16)
         generateButton.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
+        generateButton.autoSetDimension(.height, toSize: 60)
         self.bottomBackgroundView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         
         return view

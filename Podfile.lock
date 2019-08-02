@@ -1,41 +1,59 @@
 PODS:
-  - AudioKit (3.7.1)
-  - LambdaKit (0.0.4)
+  - AudioKit (4.8):
+    - AudioKit/Core (= 4.8)
+    - AudioKit/UI (= 4.8)
+  - AudioKit/Core (4.8)
+  - AudioKit/UI (4.8):
+    - AudioKit/Core
+  - LambdaKit (0.8.0)
   - MIKMIDI (1.6.1)
   - Permission/Core (2.0.4)
   - Permission/Photos (2.0.4):
     - Permission/Core
   - PureLayout (3.0.2)
-  - Sensitive (3.1.1)
+  - Sensitive (7.0)
   - SuperDelegate (0.9.0)
   - SVProgressHUD (2.1.2)
-  - SwiftyUserDefaults (3.0.0)
-  - Toucan (0.6.0)
+  - SwiftyUserDefaults (3.0.1)
+  - Toucan (0.7.0)
 
 DEPENDENCIES:
-  - AudioKit (~> 3.7)
-  - LambdaKit (~> 0.0.3)
+  - AudioKit
+  - LambdaKit
   - MIKMIDI (~> 1.6.1)
   - Permission/Photos (~> 2.0.3)
   - PureLayout (~> 3.0.2)
-  - Sensitive (~> 3.0)
+  - Sensitive
   - SuperDelegate (~> 0.9.0)
   - SVProgressHUD (~> 2.1.2)
   - SwiftyUserDefaults (~> 3.0.0)
   - Toucan (~> 0.6)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AudioKit
+    - LambdaKit
+    - MIKMIDI
+    - Permission
+    - PureLayout
+    - Sensitive
+    - SuperDelegate
+    - SVProgressHUD
+    - SwiftyUserDefaults
+    - Toucan
+
 SPEC CHECKSUMS:
-  AudioKit: e04d3282bf904cdf7121965edb067177c6d1c7d1
-  LambdaKit: 24166f69b7c3371c14b945a0ec575906086f987d
+  AudioKit: 04ecf14d5ca795b16fc92c76fc84e2421ade7df0
+  LambdaKit: 11f49e44d89af07913267aa0e9889f2617c94ba2
   MIKMIDI: ba2dae32a11dc4f1d980699e49ea1e30d013d101
   Permission: 6853b9694e66a6c9197468c66d1935c3629cbf9c
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  Sensitive: 34d1efb1e1a938499adab4bbb5d4b50ff24b3d2f
+  Sensitive: 545320978de0447167caa32e18103a78f4865ffd
   SuperDelegate: b70c7afddf8525217d0e074b850b8ea3cc6f8abd
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
-  SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
-  Toucan: 47485bbc9cb4541ef6318d6886103e6eaf16e919
+  SwiftyUserDefaults: 3d273b1739b68ada3145dc754a70ec775bc5c8be
+  Toucan: be2696d3781621fd426e90191f197a379428f506
 
-PODFILE CHECKSUM: bab97d4a1b8e0f0b32f438463b3d32f22e72cee1
+PODFILE CHECKSUM: 01188982321323fe0d0683f1a69c1da57482e53a
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.6.1
